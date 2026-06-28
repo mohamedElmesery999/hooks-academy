@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/db'
 import { errorResponse, handleApiError, jsonResponse } from '@/lib/api-response'
+import { sendNewRegistrationNotification } from '@/lib/email'
 import { registerStudentSchema } from '@/lib/validations/students'
 
 export async function POST(request: Request) {
@@ -25,6 +26,20 @@ export async function POST(request: Request) {
       },
       include: { program: true },
     })
+
+    try {
+      await sendNewRegistrationNotification({
+        studentName: student.name,
+        parentName: student.parentName,
+        age: student.age,
+        email: student.email,
+        phone: student.phone,
+        programName: student.program.name,
+        notes: student.notes,
+      })
+    } catch (err) {
+      console.error('Failed to send manager registration notification:', err)
+    }
 
     return jsonResponse(
       {

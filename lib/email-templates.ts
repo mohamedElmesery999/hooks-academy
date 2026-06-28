@@ -35,3 +35,32 @@ export function buildAdminReplySubject(status: 'accepted' | 'rejected'): string 
 export function buildCustomEmailSubject(): string {
   return 'رسالة من Hooks Academy'
 }
+
+export function buildNewRegistrationSubject(studentName: string): string {
+  return `طلب تسجيل جديد: ${studentName} - Hooks Academy`
+}
+
+export function buildNewRegistrationMessage(params: {
+  studentName: string
+  parentName: string
+  age: number
+  email: string
+  phone: string
+  programName: string
+  notes?: string | null
+}): string {
+  const notesLine = params.notes?.trim()
+    ? `\nملاحظات: ${params.notes.trim()}`
+    : ''
+
+  return `تم استلام طلب تسجيل جديد في Hooks Academy.
+
+اسم الطالب: ${params.studentName}
+العمر: ${params.age}
+ولي الأمر: ${params.parentName}
+البريد الإلكتروني: ${params.email}
+رقم الواتساب: ${params.phone}
+البرنامج: ${params.programName}${notesLine}
+
+يرجى مراجعة لوحة التحكم لقبول أو رفض الطلب.`
+}

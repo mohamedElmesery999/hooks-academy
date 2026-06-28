@@ -3,6 +3,8 @@ import {
   buildAdminReplyMessage,
   buildAdminReplySubject,
   buildCustomEmailSubject,
+  buildNewRegistrationMessage,
+  buildNewRegistrationSubject,
 } from '@/lib/email-templates'
 
 function getSmtpConfig() {
@@ -92,6 +94,29 @@ export async function sendStudentCustomEmail(params: {
       : buildCustomEmailSubject())
 
   await sendEmail({ to: params.to, subject, text })
+}
+
+function getManagerEmail() {
+  return process.env.MANAGER_EMAIL ?? 'mahmoodgamal045@gmail.com'
+}
+
+export async function sendNewRegistrationNotification(params: {
+  studentName: string
+  parentName: string
+  age: number
+  email: string
+  phone: string
+  programName: string
+  notes?: string | null
+}) {
+  const subject = buildNewRegistrationSubject(params.studentName)
+  const text = buildNewRegistrationMessage(params)
+
+  await sendEmail({
+    to: getManagerEmail(),
+    subject,
+    text,
+  })
 }
 
 export async function verifyEmailConfig() {
