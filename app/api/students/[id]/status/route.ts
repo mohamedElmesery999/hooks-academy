@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/db'
 import { errorResponse, handleApiError, jsonResponse } from '@/lib/api-response'
-import { sendStudentStatusEmail } from '@/lib/email'
+import { sendStudentStatusEmail, isSmtpConfigured } from '@/lib/email'
 import { updateStudentStatusSchema } from '@/lib/validations/students'
 
 type RouteContext = { params: Promise<{ id: string }> }
@@ -32,19 +32,23 @@ export async function PATCH(request: Request, context: RouteContext) {
       Boolean(student.email)
 
     if (shouldSendEmail) {
-      try {
-        await sendStudentStatusEmail({
-          to: student.email,
-          studentName: student.name,
-          parentName: student.parentName,
-          status,
-          customMessage: customMessage ?? student.adminNotes,
-        })
-        emailSent = true
-      } catch (err) {
-        emailError =
-          err instanceof Error ? err.message : 'فشل إرسال البريد الإلكتروني'
-        console.error('Failed to send status email:', err)
+      if (!isSmtpConfigured()) {
+        console.warn('SMTP not configured — status updated without sending email')
+      } else {
+        try {
+          await sendStudentStatusEmail({
+            to: student.email,
+            studentName: student.name,
+            parentName: student.parentName,
+            status,
+            customMessage: customMessage ?? student.adminNotes,
+          })
+          emailSent = true
+        } catch (err) {
+          emailError =
+            err instanceof Error ? err.message : 'فشل إرسال البريد الإلكتروني'
+          console.error('Failed to send status email:', err)
+        }
       }
     }
 

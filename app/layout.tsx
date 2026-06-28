@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import { AppShell } from "@/components/layout/AppShell";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { rootMetadata } from "@/lib/seo/metadata";
@@ -32,9 +31,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <JsonLd />
         <QueryProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <AppShell>{children}</AppShell>
         </QueryProvider>
       </body>
     </html>

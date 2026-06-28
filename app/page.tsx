@@ -36,7 +36,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(56,189,248,0.12)_0%,_transparent_60%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_rgba(192,38,211,0.08)_0%,_transparent_50%)]" />
 
-        <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-10 px-4 py-20 sm:px-6 lg:flex-row lg:py-28">
+        <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-10 px-4 py-20 sm:px-6 lg:flex-row lg:py-28">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -48,7 +48,7 @@ export default function Home() {
             </span>
             <h1 className="mb-6 text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
               اكتشف عالم{' '}
-              <span className="gradient-text">المستقبل</span>
+              <span className="text-primary-400">المستقبل</span>
               <br />
               مع Hooks Academy
             </h1>
@@ -87,7 +87,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <FadeIn className="mb-12 text-center">
           <h2 className="mb-4 text-3xl font-bold text-white">لماذا Hooks Academy؟</h2>
           <p className="mx-auto max-w-2xl text-slate-400">
@@ -111,7 +111,7 @@ export default function Home() {
       </section>
 
       <section className="border-y border-dark-border bg-dark-card/50 py-20">
-        <div className="mx-auto max-w-6xl px-4 text-center sm:px-6">
+        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6">
           <FadeIn>
             <h2 className="mb-4 text-3xl font-bold text-white">جاهز تبدأ المغامرة؟</h2>
             <p className="mb-8 text-slate-400">سجّل طفلك الآن وانضم لعائلة Hooks Academy</p>
