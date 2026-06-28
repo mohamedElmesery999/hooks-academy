@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+enum RequestStatus {
+  pending
+  accepted
+  rejected
+}
+
+model students {
+  id String @id @default(uuid())
+  name String
+  parentName String
+  age Int
+  email String
+  phone String
+  program programs @relation(fields: [programId], references: [id])
+  programId String
+  notes String?
+  adminNotes String?
+  status RequestStatus @default(pending)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model programs {
+  id String @id @default(uuid())
+  name String
+  description String
+  students students[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

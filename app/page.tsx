@@ -1,65 +1,126 @@
-import Image from "next/image";
+"use client"
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { ArrowLeft, Sparkles, Users, BookOpen, Trophy } from 'lucide-react'
+import { Button } from '../components/ui/Button'
+import { Card } from '../components/ui/Card'
+import { FadeIn, StaggerContainer, StaggerItem } from '../components/ui/FadeIn'
+
+const features = [
+  {
+    icon: Sparkles,
+    title: 'تعلّم تفاعلي',
+    description: 'دروس ممتعة تجمع بين اللعب والتعلّم لتحفيز الإبداع.',
+  },
+  {
+    icon: Users,
+    title: 'مجموعات صغيرة',
+    description: 'اهتمام فردي لكل طالب في مجموعات محدودة العدد.',
+  },
+  {
+    icon: BookOpen,
+    title: 'محتوى متنوع',
+    description: 'برمجة، روبوتات، تصميم، لغات، ورياضيات.',
+  },
+  {
+    icon: Trophy,
+    title: 'شهادات وإنجازات',
+    description: 'مكافآت وشهادات تحفّز الطلاب على الاستمرار.',
+  },
+]
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(56,189,248,0.12)_0%,_transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_rgba(192,38,211,0.08)_0%,_transparent_50%)]" />
+
+        <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-10 px-4 py-20 sm:px-6 lg:flex-row lg:py-28">
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            className="flex-1 text-center lg:text-right"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+            <span className="mb-4 inline-block rounded-full border border-primary-500/30 bg-primary-500/10 px-4 py-1.5 text-sm font-medium text-primary-400">
+              للأطفال من 8 إلى 15 سنة
+            </span>
+            <h1 className="mb-6 text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
+              اكتشف عالم{' '}
+              <span className="gradient-text">المستقبل</span>
+              <br />
+              مع Hooks Academy
+            </h1>
+            <p className="mb-8 max-w-xl text-lg leading-relaxed text-slate-400 lg:mx-0 mx-auto">
+              أكاديمية تعليمية متخصصة في تقديم محتوى تفاعلي وممتع يبني مهارات التفكير
+              والإبداع والبرمجة لدى الأطفال.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
+              <Link href="/register">
+                <Button size="lg">سجّل طفلك الآن</Button>
+              </Link>
+              <Link href="/content">
+                <Button size="lg" variant="secondary">
+                  استكشف المحتوى
+                  <ArrowLeft size={18} />
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="relative flex-shrink-0"
+          >
+            <div className="absolute -inset-4 rounded-full bg-gradient-to-br from-accent-orange/20 via-primary-500/20 to-accent-purple/20 blur-2xl" />
+            <motion.img
+              src="/logo.png"
+              alt="Hooks Academy"
+              className="relative h-64 w-64 rounded-3xl object-cover shadow-2xl sm:h-80 sm:w-80"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </motion.div>
         </div>
-      </main>
-    </div>
-  );
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+        <FadeIn className="mb-12 text-center">
+          <h2 className="mb-4 text-3xl font-bold text-white">لماذا Hooks Academy؟</h2>
+          <p className="mx-auto max-w-2xl text-slate-400">
+            نؤمن أن التعلّم يجب أن يكون مغامرة ممتعة، لذلك صممنا برامجنا لتناسب عقول الأطفال الفضولية.
+          </p>
+        </FadeIn>
+
+        <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((feature) => (
+            <StaggerItem key={feature.title}>
+              <Card hover className="h-full text-center">
+                <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-500/10">
+                  <feature.icon size={28} className="text-primary-400" />
+                </div>
+                <h3 className="mb-2 text-lg font-semibold text-white">{feature.title}</h3>
+                <p className="text-sm leading-relaxed text-slate-400">{feature.description}</p>
+              </Card>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+      </section>
+
+      <section className="border-y border-dark-border bg-dark-card/50 py-20">
+        <div className="mx-auto max-w-6xl px-4 text-center sm:px-6">
+          <FadeIn>
+            <h2 className="mb-4 text-3xl font-bold text-white">جاهز تبدأ المغامرة؟</h2>
+            <p className="mb-8 text-slate-400">سجّل طفلك الآن وانضم لعائلة Hooks Academy</p>
+            <Link href="/register">
+              <Button size="lg">ابدأ التسجيل</Button>
+            </Link>
+          </FadeIn>
+        </div>
+      </section>
+    </>
+  )
 }
