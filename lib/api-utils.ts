@@ -30,6 +30,8 @@ export type Student = {
   programId: string
   notes: string | null
   adminNotes: string | null
+  totalAmount: number | null
+  paidAmount: number | null
   status: RequestStatus
   createdAt: string
   updatedAt: string

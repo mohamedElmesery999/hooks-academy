@@ -2,6 +2,7 @@
 
 @theme {
   --font-cairo: "Cairo", sans-serif;
+  --max-width-11xl: 100rem;
   --color-dark: #0b0e14;
   --color-dark-card: #12161f;
   --color-dark-border: #1e2533;
