@@ -18,7 +18,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-dark-border/60 bg-dark/80 backdrop-blur-xl">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-3">
           <Image src="/logo.png" alt="Hooks Academy" width={40} height={40} className="rounded-lg object-cover w-10 h-10" />
           <span className="hidden text-lg font-bold text-white sm:block">Hooks Academy</span>

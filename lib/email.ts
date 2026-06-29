@@ -8,14 +8,20 @@ import {
 } from '@/lib/email-templates'
 
 function getSmtpConfig() {
-  const user = process.env.SMTP_USER
-  const pass = process.env.SMTP_APP_PASSWORD
+  const user = process.env.SMTP_USER?.trim()
+  const pass = process.env.SMTP_APP_PASSWORD?.trim()
 
   if (!user || !pass) {
     throw new Error('إعدادات البريد غير مكتملة. أضف SMTP_USER و SMTP_APP_PASSWORD في ملف .env')
   }
 
   return { user, pass }
+}
+
+export function isSmtpConfigured() {
+  const user = process.env.SMTP_USER?.trim()
+  const pass = process.env.SMTP_APP_PASSWORD?.trim()
+  return Boolean(user && pass)
 }
 
 function createTransporter() {

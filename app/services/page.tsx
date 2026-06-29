@@ -15,7 +15,7 @@ const iconMap: Record<string, LucideIcon> = {
 
 export default function Services() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
       <FadeIn className="mb-12 text-center">
         <h1 className="mb-4 text-4xl font-bold text-white">خدماتنا</h1>
         <p className="mx-auto max-w-2xl text-lg text-slate-400">
@@ -41,7 +41,7 @@ export default function Services() {
                 <p className="mb-4 text-sm leading-relaxed text-slate-400">{service.description}</p>
                 {service.available && (
                   <Link href="/register">
-                    <Button size="sm" variant="secondary" className="group-hover:border-primary-500/50">
+                    <Button size="lg" variant="secondary" className="group-hover:border-primary-500/50 w-full bg-primary-500/10">
                       سجّل الآن
                     </Button>
                   </Link>

@@ -36,7 +36,7 @@ export default function Dashboard() {
 
   const handleLogout = () => {
     logoutAdmin()
-    router.push('/admin/login')
+    router.push('/login')
   }
 
   const filtered =
@@ -66,10 +66,7 @@ export default function Dashboard() {
               <p className="text-xs text-slate-400">Hooks Academy Admin</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Button size="sm" variant="secondary" onClick={() => refetch()} loading={isFetching}>
-              <RefreshCw size={14} />
-            </Button>
+          <div className="flex items-center">
             <Button size="sm" variant="ghost" onClick={handleLogout}>
               <LogOut size={14} />
               خروج

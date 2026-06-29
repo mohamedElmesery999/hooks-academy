@@ -44,22 +44,27 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-dark px-4">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(56,189,248,0.08)_0%,_transparent_60%)]" />
+    <div className="relative flex h-full flex-1 items-center justify-center overflow-hidden bg-dark px-4">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(56,189,248,0.08)_0%,transparent_60%)]" />
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative w-full max-w-md"
+        transition={{ duration: 0.45 }}
+        className="relative w-full max-w-lg"
       >
-        <div className="mb-8 text-center">
-          <img src="/logo.png" alt="Hooks Academy" className="mx-auto mb-4 h-16 w-16 rounded-xl object-cover" />
+        <div className="mb-6 text-center">
+          <img
+            src="/logo.png"
+            alt="Hooks Academy"
+            className="mx-auto mb-3 h-40 w-40 rounded-xl object-cover"
+          />
           <h1 className="text-2xl font-bold text-white">لوحة تحكم الأدمن</h1>
-          <p className="mt-2 text-sm text-slate-400">سجّل دخولك لإدارة طلبات التسجيل</p>
+          <p className="mt-1.5 text-sm text-slate-400">سجّل دخولك لإدارة طلبات التسجيل</p>
         </div>
 
         <Card>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <Input
               id="email"
               label="البريد الإلكتروني"
@@ -87,14 +92,14 @@ export default function Login() {
               </div>
             )}
 
-            <Button type="submit" size="lg" loading={isSubmitting} className="w-full">
+            <Button type="submit" size="lg" loading={isSubmitting} className="w-full bg-primary-500/10 mt-4">
               <LogIn size={18} />
               تسجيل الدخول
             </Button>
           </form>
         </Card>
 
-        <p className="mt-6 flex items-center justify-center gap-2 text-xs text-slate-500">
+        <p className="mt-4 flex items-center justify-center gap-2 text-lg text-slate-500">
           <Lock size={12} />
           هذه الصفحة للمسؤولين فقط
         </p>
