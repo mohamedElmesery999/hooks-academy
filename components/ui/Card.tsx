@@ -18,7 +18,7 @@ export function Card({ children, className = '', hover = false }: CardProps) {
 
   return (
     <Component
-      className={`rounded-2xl border border-dark-border bg-dark-card p-6 ${className}`}
+      className={`rounded-2xl border border-dark-border bg-dark-card p-4 sm:p-6 ${className}`}
       {...motionProps}
     >
       {children}

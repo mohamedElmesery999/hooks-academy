@@ -18,7 +18,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-dark-border/60 bg-dark/80 backdrop-blur-xl">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-3 py-3 sm:px-6">
         <Link href="/" className="flex items-center gap-3">
           <Image src="/logo.png" alt="Hooks Academy" width={40} height={40} className="rounded-lg object-cover w-10 h-10" />
           <span className="hidden text-lg font-bold text-white sm:block">Hooks Academy</span>
@@ -63,14 +63,14 @@ export function Navbar() {
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden border-t border-dark-border md:hidden"
           >
-            <div className="flex flex-col gap-1 px-4 py-3">
+            <div className="flex flex-col gap-1 px-3 py-3 sm:px-6">
               {links.map((link) => (
                   <Link
                   key={link.to}
                   href={link.to}
                   as={link.to === '/' ? undefined : link.to}
                   onClick={() => setOpen(false)}
-                  className={`rounded-lg px-4 py-3 text-sm font-medium ${
+                  className={`rounded-lg px-3 py-3.5 text-base font-medium sm:px-4 sm:text-sm ${
                     link.to === '/' ? 'text-primary-400 bg-primary-500/10' : 'text-slate-400'
                   }`}
                 >
