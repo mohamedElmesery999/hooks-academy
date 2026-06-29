@@ -24,7 +24,11 @@ export async function POST(request: Request, context: RouteContext) {
       return errorResponse('لا يوجد بريد إلكتروني لهذا الطالب', 400)
     }
 
-    const customMessage = message?.trim() || student.adminNotes?.trim() || ''
+    const customMessage = message?.trim() ?? ''
+
+    if (!customMessage) {
+      return errorResponse('نص الرسالة مطلوب', 400)
+    }
 
     await sendStudentCustomEmail({
       to: student.email,

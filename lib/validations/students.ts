@@ -38,9 +38,18 @@ export const updateStudentSchema = z
     programId: z.string().uuid(),
     notes: z.string().nullable(),
     adminNotes: z.string().nullable(),
+    totalAmount: z.number().nonnegative().nullable(),
+    paidAmount: z.number().nonnegative().nullable(),
     status: z.enum(['pending', 'accepted', 'rejected']),
   })
   .partial()
+  .refine(
+    (data) => {
+      if (data.totalAmount == null || data.paidAmount == null) return true
+      return data.paidAmount <= data.totalAmount
+    },
+    { message: 'المبلغ المدفوع لا يمكن أن يكون أكبر من الإجمالي', path: ['paidAmount'] },
+  )
 
 export const updateStudentStatusSchema = z.object({
   status: z.enum(['pending', 'accepted', 'rejected']),

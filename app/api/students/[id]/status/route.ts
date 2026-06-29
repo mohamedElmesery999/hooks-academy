@@ -41,7 +41,7 @@ export async function PATCH(request: Request, context: RouteContext) {
             studentName: student.name,
             parentName: student.parentName,
             status,
-            customMessage: customMessage ?? student.adminNotes,
+            customMessage: customMessage?.trim() || undefined,
           })
           emailSent = true
         } catch (err) {
