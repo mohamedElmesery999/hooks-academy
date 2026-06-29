@@ -15,10 +15,10 @@ const iconMap: Record<string, LucideIcon> = {
 
 export default function Services() {
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6">
-      <FadeIn className="mb-12 text-center">
-        <h1 className="mb-4 text-4xl font-bold text-white">خدماتنا</h1>
-        <p className="mx-auto max-w-2xl text-lg text-slate-400">
+    <div className="page-container max-w-7xl">
+      <FadeIn className="mb-8 text-center sm:mb-12">
+        <h1 className="mb-4 text-3xl font-bold text-white sm:text-4xl">خدماتنا</h1>
+        <p className="mx-auto max-w-2xl text-lg text-slate-400 sm:text-lg">
           برامج تعليمية متنوعة مصممة خصيصاً لتنمية مهارات الأطفال في مختلف المجالات.
         </p>
       </FadeIn>
@@ -37,8 +37,8 @@ export default function Services() {
                 <div className={`mb-4 inline-flex rounded-2xl bg-gradient-to-br ${service.color} p-3 ${!service.available ? 'grayscale-[30%]' : ''}`}>
                   <Icon size={28} className="text-white" />
                 </div>
-                <h3 className="mb-2 text-xl font-semibold text-white">{service.title}</h3>
-                <p className="mb-4 text-sm leading-relaxed text-slate-400">{service.description}</p>
+                <h3 className="mb-2 text-lg font-semibold text-white sm:text-xl">{service.title}</h3>
+                <p className="mb-4 text-base leading-relaxed text-slate-400 sm:text-sm">{service.description}</p>
                 {service.available && (
                   <Link href="/register">
                     <Button size="lg" variant="secondary" className="group-hover:border-primary-500/50 w-full bg-primary-500/10">
