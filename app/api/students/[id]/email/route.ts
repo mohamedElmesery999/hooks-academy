@@ -1,11 +1,15 @@
 import { prisma } from '@/lib/db'
 import { errorResponse, handleApiError, jsonResponse } from '@/lib/api-response'
+import { requireAdmin } from '@/lib/require-admin'
 import { sendStudentCustomEmail } from '@/lib/email'
 import { sendStudentEmailSchema } from '@/lib/validations/email'
 
 type RouteContext = { params: Promise<{ id: string }> }
 
 export async function POST(request: Request, context: RouteContext) {
+  const authError = await requireAdmin()
+  if (authError) return authError
+
   try {
     const { id } = await context.params
     const body = await request.json()

@@ -33,7 +33,7 @@ export default function Login() {
   const onSubmit = async (data: FormData) => {
     setError(null)
 
-    const success = loginAdmin(data.email, data.password)
+    const success = await loginAdmin(data.email, data.password)
 
     if (!success) {
       setError('البريد الإلكتروني أو كلمة المرور غير صحيحة')
@@ -41,6 +41,7 @@ export default function Login() {
     }
 
     router.push('/admin')
+    router.refresh()
   }
 
   return (

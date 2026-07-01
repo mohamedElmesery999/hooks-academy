@@ -1,10 +1,14 @@
 import { prisma } from '@/lib/db'
 import { errorResponse, handleApiError, jsonResponse } from '@/lib/api-response'
+import { requireAdmin } from '@/lib/require-admin'
 import { updateStudentSchema } from '@/lib/validations/students'
 
 type RouteContext = { params: Promise<{ id: string }> }
 
 export async function GET(_request: Request, context: RouteContext) {
+  const authError = await requireAdmin()
+  if (authError) return authError
+
   try {
     const { id } = await context.params
 
@@ -24,6 +28,9 @@ export async function GET(_request: Request, context: RouteContext) {
 }
 
 export async function PATCH(request: Request, context: RouteContext) {
+  const authError = await requireAdmin()
+  if (authError) return authError
+
   try {
     const { id } = await context.params
     const body = await request.json()
@@ -52,6 +59,9 @@ export async function PATCH(request: Request, context: RouteContext) {
 }
 
 export async function DELETE(_request: Request, context: RouteContext) {
+  const authError = await requireAdmin()
+  if (authError) return authError
+
   try {
     const { id } = await context.params
 

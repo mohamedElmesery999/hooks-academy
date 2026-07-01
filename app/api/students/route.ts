@@ -1,9 +1,13 @@
 import { prisma } from '@/lib/db'
 import { errorResponse, handleApiError, jsonResponse } from '@/lib/api-response'
+import { requireAdmin } from '@/lib/require-admin'
 import { createStudentSchema } from '@/lib/validations/students'
 import type { RequestStatus } from '@/lib/generated/prisma/client'
 
 export async function GET(request: Request) {
+  const authError = await requireAdmin()
+  if (authError) return authError
+
   try {
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status') as RequestStatus | null
@@ -21,6 +25,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const authError = await requireAdmin()
+  if (authError) return authError
+
   try {
     const body = await request.json()
     const data = createStudentSchema.parse(body)

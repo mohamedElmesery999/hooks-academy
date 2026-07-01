@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/db'
 import { handleApiError, jsonResponse } from '@/lib/api-response'
+import { requireAdmin } from '@/lib/require-admin'
 import { createProgramSchema } from '@/lib/validations/programs'
 
 export async function GET() {
@@ -16,6 +17,9 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const authError = await requireAdmin()
+  if (authError) return authError
+
   try {
     const body = await request.json()
     const data = createProgramSchema.parse(body)

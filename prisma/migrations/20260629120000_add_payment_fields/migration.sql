@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "students" ADD COLUMN "totalAmount" DOUBLE PRECISION,
+ADD COLUMN "paidAmount" DOUBLE PRECISION;

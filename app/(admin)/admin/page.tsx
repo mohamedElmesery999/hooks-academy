@@ -42,9 +42,10 @@ export default function Dashboard() {
     await deleteStudent.mutateAsync(id)
   }
 
-  const handleLogout = () => {
-    logoutAdmin()
+  const handleLogout = async () => {
+    await logoutAdmin()
     router.push('/login')
+    router.refresh()
   }
 
   const filtered =

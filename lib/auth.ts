@@ -1,20 +1,25 @@
-const AUTH_KEY = 'hooks_admin_session'
+export async function loginAdmin(email: string, password: string): Promise<boolean> {
+  const response = await fetch('/api/admin/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  })
 
-export const ADMIN_EMAIL = 'hooks@gmail.com'
-export const ADMIN_PASSWORD = 'hooks@2026'
+  return response.ok
+}
 
-export function loginAdmin(email: string, password: string): boolean {
-  if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-    sessionStorage.setItem(AUTH_KEY, 'true')
-    return true
+export async function logoutAdmin(): Promise<void> {
+  await fetch('/api/admin/logout', { method: 'POST' })
+}
+
+export async function isAdminLoggedIn(): Promise<boolean> {
+  try {
+    const response = await fetch('/api/admin/session', { cache: 'no-store' })
+    if (!response.ok) return false
+
+    const data = (await response.json()) as { authenticated?: boolean }
+    return Boolean(data.authenticated)
+  } catch {
+    return false
   }
-  return false
-}
-
-export function logoutAdmin(): void {
-  sessionStorage.removeItem(AUTH_KEY)
-}
-
-export function isAdminLoggedIn(): boolean {
-  return sessionStorage.getItem(AUTH_KEY) === 'true'
 }
