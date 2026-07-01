@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { getOgImageUrl } from './og-image'
 import { getSiteUrl, siteConfig } from './site'
 
 type PageMetadataOptions = {
@@ -29,6 +30,9 @@ export function createMetadata({
       ? resolvedTitle.absolute
       : resolvedTitle.default
 
+  const ogImageUrl = getOgImageUrl(path)
+  const ogImageAlt = `${siteConfig.name} - ${siteConfig.nameAr}`
+
   return {
     metadataBase: new URL(siteUrl),
     title: resolvedTitle,
@@ -37,6 +41,10 @@ export function createMetadata({
     authors: [{ name: siteConfig.name, url: siteUrl }],
     creator: siteConfig.name,
     publisher: siteConfig.name,
+    icons: {
+      icon: '/logo.png',
+      apple: '/logo.png',
+    },
     formatDetection: {
       email: false,
       address: false,
@@ -52,11 +60,21 @@ export function createMetadata({
       siteName: siteConfig.name,
       title: pageTitle,
       description,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: ogImageAlt,
+          type: 'image/png',
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: pageTitle,
       description,
+      images: [ogImageUrl],
     },
     robots: noIndex
       ? { index: false, follow: false }
