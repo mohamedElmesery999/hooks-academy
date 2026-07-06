@@ -70,7 +70,7 @@ export default function Login() {
               id="email"
               label="البريد الإلكتروني"
               type="email"
-              placeholder="hooks@gmail.com"
+              placeholder="example@gmail.com"
               dir="ltr"
               className="text-left"
               error={errors.email?.message}
