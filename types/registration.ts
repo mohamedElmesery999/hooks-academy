@@ -215,3 +215,27 @@ export const COURSES = [
     tags: ['رياضيات', 'ألعاب'],
   },
 ] as const
+
+export const HOME_VIDEOS = [
+  {
+    id: 'podcast',
+    title: 'بودكاست مع مؤسس الأكاديمية م. محمد المسيري',
+    youtubeId: 'Hk0zCkO8MCM',
+    startSeconds: 287,
+  },
+  {
+    id: 'html-intro',
+    title: 'قبل ما تتعلّم البرمجة… لازم تفهم HTML!',
+    youtubeId: 'AwgCMps8Ij4',
+  },
+] as const
+
+export const HOME_TESTIMONIALS = [
+  {
+    id: 1,
+    name: 'سندس جمال',
+    role: 'طالبة',
+    image: '/testimonials/sondos-whatsapp.png',
+    alt: 'رأي الطالبة سندس جمال عن الدبلومة عبر واتساب',
+  },
+] as const

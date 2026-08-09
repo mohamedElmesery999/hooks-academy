@@ -18,7 +18,7 @@ export function JsonLd() {
       educationalRole: 'student',
       audienceType: 'Children aged 8-15',
     },
-    sameAs: [],
+    sameAs: [siteConfig.social.facebook],
   }
 
   const websiteSchema = {
