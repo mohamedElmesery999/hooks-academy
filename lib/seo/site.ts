@@ -8,6 +8,9 @@ export const siteConfig = {
   locale: 'ar_EG',
   language: 'ar',
   email: 'info@hooksacademy.com',
+  social: {
+    facebook: 'https://www.facebook.com/share/19K1ojG6CB/',
+  },
   keywords: [
     'Hooks Academy',
     'أكاديمية هوكس',

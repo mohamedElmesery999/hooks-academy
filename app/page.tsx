@@ -2,6 +2,9 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Sparkles, Users, BookOpen, Trophy } from 'lucide-react'
+import { HOME_VIDEOS } from '@/types/registration'
+import { YouTubeEmbed } from '@/components/home/YouTubeEmbed'
+import { TestimonialsGallery } from '@/components/home/TestimonialsGallery'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import { FadeIn, StaggerContainer, StaggerItem } from '../components/ui/FadeIn'
@@ -110,6 +113,57 @@ export default function Home() {
             </StaggerItem>
           ))}
         </StaggerContainer>
+      </section>
+
+      <section className="border-y border-dark-border bg-dark-card/30 py-14 sm:py-20">
+        <div className="page-container max-w-7xl">
+          <FadeIn className="mb-10 text-center sm:mb-12">
+            <h2 className="mb-4 text-2xl font-bold text-white sm:text-3xl">شاهد التجربة</h2>
+            <p className="mx-auto max-w-2xl text-base text-slate-400 sm:text-base">
+              بودكاست مع مؤسس الأكاديمية م. محمد المسيري، ولمحات من أسلوب التعلّم داخل Hooks Academy.
+            </p>
+          </FadeIn>
+
+          <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2">
+            {HOME_VIDEOS.map((video) => (
+              <div
+                key={video.id}
+                className="overflow-hidden rounded-2xl border border-dark-border bg-dark-card"
+              >
+                {video.youtubeId ? (
+                  <YouTubeEmbed
+                    youtubeId={video.youtubeId}
+                    title={video.title}
+                    startSeconds={'startSeconds' in video ? video.startSeconds : undefined}
+                  />
+                ) : (
+                  <div className="relative aspect-video">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-primary-500/10 via-dark to-accent-purple/10 px-4 text-center">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full border border-primary-500/30 bg-primary-500/15 text-primary-400">
+                        <span className="ms-0.5 text-xl">▶</span>
+                      </div>
+                      <p className="text-sm text-slate-400">الفيديو قريباً</p>
+                    </div>
+                  </div>
+                )}
+                <div className="px-4 py-3">
+                  <h3 className="text-base font-semibold text-white sm:text-sm">{video.title}</h3>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="page-container max-w-7xl sm:py-20">
+        <FadeIn className="mb-10 text-center sm:mb-12">
+          <h2 className="mb-4 text-2xl font-bold text-white sm:text-3xl">آراء حقيقية من طلابنا</h2>
+          <p className="mx-auto max-w-2xl text-base text-slate-400 sm:text-base">
+            اضغط على أي صورة لعرض المحادثة كاملة.
+          </p>
+        </FadeIn>
+
+        <TestimonialsGallery />
       </section>
 
       <section className="border-y border-dark-border bg-dark-card/50 py-14 sm:py-20">
