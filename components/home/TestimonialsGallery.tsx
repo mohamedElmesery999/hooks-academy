@@ -4,22 +4,26 @@ import { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, ChevronRight, X, ZoomIn } from 'lucide-react'
-import { HOME_TESTIMONIALS } from '@/types/registration'
-
-type Testimonial = (typeof HOME_TESTIMONIALS)[number]
+import type { HomeTestimonial } from '@/lib/api-utils'
+import { useHomeTestimonials } from '@/lib/hooks/api'
 
 const PAGE_SIZE = 4
 
 export function TestimonialsGallery() {
+  const { data: testimonials = [], isLoading } = useHomeTestimonials()
   const [page, setPage] = useState(0)
-  const [selected, setSelected] = useState<Testimonial | null>(null)
+  const [selected, setSelected] = useState<HomeTestimonial | null>(null)
 
-  const totalPages = Math.max(1, Math.ceil(HOME_TESTIMONIALS.length / PAGE_SIZE))
+  const totalPages = Math.max(1, Math.ceil(testimonials.length / PAGE_SIZE))
+
+  useEffect(() => {
+    if (page > totalPages - 1) setPage(Math.max(0, totalPages - 1))
+  }, [page, totalPages])
 
   const visible = useMemo(() => {
     const start = page * PAGE_SIZE
-    return HOME_TESTIMONIALS.slice(start, start + PAGE_SIZE)
-  }, [page])
+    return testimonials.slice(start, start + PAGE_SIZE)
+  }, [page, testimonials])
 
   const goPrev = () => setPage((p) => (p === 0 ? totalPages - 1 : p - 1))
   const goNext = () => setPage((p) => (p === totalPages - 1 ? 0 : p + 1))
@@ -39,6 +43,14 @@ export function TestimonialsGallery() {
       window.removeEventListener('keydown', onKeyDown)
     }
   }, [selected])
+
+  if (isLoading) {
+    return <p className="text-center text-slate-400">جاري تحميل الآراء...</p>
+  }
+
+  if (testimonials.length === 0) {
+    return <p className="text-center text-slate-400">لا توجد آراء بعد</p>
+  }
 
   return (
     <>
@@ -72,8 +84,8 @@ export function TestimonialsGallery() {
                   >
                     <div className="relative aspect-[3/4] overflow-hidden">
                       <Image
-                        src={item.image}
-                        alt={item.alt}
+                        src={item.imageUrl}
+                        alt={item.alt ?? item.name}
                         fill
                         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                         className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
@@ -136,7 +148,7 @@ export function TestimonialsGallery() {
             <motion.div
               role="dialog"
               aria-modal="true"
-              aria-label={selected.alt}
+              aria-label={selected.alt ?? selected.name}
               initial={{ opacity: 0, scale: 0.92, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 12 }}
@@ -157,8 +169,8 @@ export function TestimonialsGallery() {
 
                 <div className="overflow-hidden rounded-2xl border border-white/10 bg-dark shadow-inner">
                   <Image
-                    src={selected.image}
-                    alt={selected.alt}
+                    src={selected.imageUrl}
+                    alt={selected.alt ?? selected.name}
                     width={720}
                     height={1280}
                     className="mx-auto h-auto max-h-[calc(92vh-2rem)] w-full object-contain"
