@@ -62,10 +62,39 @@ export type RegisterResponse = {
   created_at: string
 }
 
+export type HomeVideo = {
+  id: string
+  title: string
+  youtubeId: string
+  startSeconds: number | null
+  sortOrder: number
+  createdAt: string
+  updatedAt: string
+}
+
+export type HomeTestimonial = {
+  id: string
+  name: string
+  role: string
+  imageUrl: string
+  alt: string | null
+  sortOrder: number
+  createdAt: string
+  updatedAt: string
+}
+
 export const api = axios.create({
   baseURL: '/api',
-  headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
+})
+
+api.interceptors.request.use((config) => {
+  if (config.data instanceof FormData) {
+    delete config.headers['Content-Type']
+  } else if (!config.headers['Content-Type']) {
+    config.headers['Content-Type'] = 'application/json'
+  }
+  return config
 })
 
 api.interceptors.response.use(
@@ -158,6 +187,36 @@ export async function registerStudent(payload: RegisterPayload) {
   return data
 }
 
+export async function getHomeVideos() {
+  const { data } = await api.get<HomeVideo[]>('/videos')
+  return data
+}
+
+export async function createHomeVideo(payload: { title: string; url: string; startSeconds?: number | null }) {
+  const { data } = await api.post<HomeVideo>('/videos', payload)
+  return data
+}
+
+export async function deleteHomeVideo(id: string) {
+  const { data } = await api.delete<{ success: boolean }>(`/videos/${id}`)
+  return data
+}
+
+export async function getHomeTestimonials() {
+  const { data } = await api.get<HomeTestimonial[]>('/testimonials')
+  return data
+}
+
+export async function createHomeTestimonial(payload: FormData) {
+  const { data } = await api.post<HomeTestimonial>('/testimonials', payload)
+  return data
+}
+
+export async function deleteHomeTestimonial(id: string) {
+  const { data } = await api.delete<{ success: boolean }>(`/testimonials/${id}`)
+  return data
+}
+
 export const queryKeys = {
   programs: {
     all: ['programs'] as const,
@@ -167,5 +226,11 @@ export const queryKeys = {
     all: (status?: RequestStatus) =>
       status ? (['students', status] as const) : (['students'] as const),
     detail: (id: string) => ['students', id] as const,
+  },
+  videos: {
+    all: ['videos'] as const,
+  },
+  testimonials: {
+    all: ['testimonials'] as const,
   },
 }

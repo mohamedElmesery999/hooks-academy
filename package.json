@@ -8,7 +8,8 @@
     "build": "npx prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
-    "db:seed": "npx tsx prisma/seed.ts"
+    "db:seed": "npx tsx prisma/seed.ts",
+    "db:seed:content": "npx tsx prisma/seed-content.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

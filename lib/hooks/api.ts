@@ -10,8 +10,14 @@ import {
 import {
   createProgram,
   createStudent,
+  createHomeTestimonial,
+  createHomeVideo,
   deleteProgram,
   deleteStudent,
+  deleteHomeTestimonial,
+  deleteHomeVideo,
+  getHomeTestimonials,
+  getHomeVideos,
   getProgram,
   getPrograms,
   getStudent,
@@ -24,6 +30,8 @@ import {
   updateStudentStatus,
   type CreateProgramPayload,
   type CreateStudentPayload,
+  type HomeTestimonial,
+  type HomeVideo,
   type Program,
   type RegisterPayload,
   type RegisterResponse,
@@ -217,5 +225,85 @@ export function useRegisterStudent(
   return useMutation({
     mutationFn: registerStudent,
     ...options,
+  })
+}
+
+export function useHomeVideos(
+  options?: Omit<UseQueryOptions<HomeVideo[]>, 'queryKey' | 'queryFn'>,
+) {
+  return useQuery({
+    queryKey: queryKeys.videos.all,
+    queryFn: getHomeVideos,
+    ...options,
+  })
+}
+
+export function useCreateHomeVideo(
+  options?: UseMutationOptions<HomeVideo, Error, { title: string; url: string }>,
+) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    ...options,
+    mutationFn: createHomeVideo,
+    onSuccess: (data, variables, onMutateResult, context) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.videos.all })
+      options?.onSuccess?.(data, variables, onMutateResult, context)
+    },
+  })
+}
+
+export function useDeleteHomeVideo(
+  options?: UseMutationOptions<{ success: boolean }, Error, string>,
+) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    ...options,
+    mutationFn: deleteHomeVideo,
+    onSuccess: (data, variables, onMutateResult, context) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.videos.all })
+      options?.onSuccess?.(data, variables, onMutateResult, context)
+    },
+  })
+}
+
+export function useHomeTestimonials(
+  options?: Omit<UseQueryOptions<HomeTestimonial[]>, 'queryKey' | 'queryFn'>,
+) {
+  return useQuery({
+    queryKey: queryKeys.testimonials.all,
+    queryFn: getHomeTestimonials,
+    ...options,
+  })
+}
+
+export function useCreateHomeTestimonial(
+  options?: UseMutationOptions<HomeTestimonial, Error, FormData>,
+) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    ...options,
+    mutationFn: createHomeTestimonial,
+    onSuccess: (data, variables, onMutateResult, context) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.testimonials.all })
+      options?.onSuccess?.(data, variables, onMutateResult, context)
+    },
+  })
+}
+
+export function useDeleteHomeTestimonial(
+  options?: UseMutationOptions<{ success: boolean }, Error, string>,
+) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    ...options,
+    mutationFn: deleteHomeTestimonial,
+    onSuccess: (data, variables, onMutateResult, context) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.testimonials.all })
+      options?.onSuccess?.(data, variables, onMutateResult, context)
+    },
   })
 }

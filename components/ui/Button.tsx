@@ -24,9 +24,10 @@ const sizes: Record<Size, string> = {
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', size = 'md', loading, className = '', children, disabled, ...props }, ref) => (
+  ({ variant = 'primary', size = 'md', loading, className = '', children, disabled, type = 'button', ...props }, ref) => (
     <button
       ref={ref}
+      type={type}
       disabled={disabled || loading}
       className={`inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed ${variants[variant]} ${sizes[size]} ${className}`}
       {...props}

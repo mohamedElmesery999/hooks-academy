@@ -12,7 +12,8 @@ interface ModalProps {
   description?: string
   children?: ReactNode
   confirmLabel?: string
-  cancelLabel?: string
+  /** Pass `null` to hide the cancel button (alert-style popup). */
+  cancelLabel?: string | null
   onConfirm: () => void
   loading?: boolean
   variant?: 'success' | 'danger'
@@ -83,9 +84,11 @@ export function Modal({
             {children}
 
             <div className="mt-6 flex justify-end gap-2">
-              <Button type="button" variant="secondary" onClick={onClose} disabled={loading}>
-                {cancelLabel}
-              </Button>
+              {cancelLabel != null && (
+                <Button type="button" variant="secondary" onClick={onClose} disabled={loading}>
+                  {cancelLabel}
+                </Button>
+              )}
               <Button
                 type="button"
                 variant={variant === 'danger' ? 'danger' : 'success'}

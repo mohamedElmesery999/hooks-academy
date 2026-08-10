@@ -2,9 +2,9 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Sparkles, Users, BookOpen, Trophy } from 'lucide-react'
-import { HOME_VIDEOS } from '@/types/registration'
 import { YouTubeEmbed } from '@/components/home/YouTubeEmbed'
 import { TestimonialsGallery } from '@/components/home/TestimonialsGallery'
+import { useHomeVideos } from '@/lib/hooks/api'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
 import { FadeIn, StaggerContainer, StaggerItem } from '../components/ui/FadeIn'
@@ -33,6 +33,8 @@ const features = [
 ]
 
 export default function Home() {
+  const { data: videos = [], isLoading: videosLoading } = useHomeVideos()
+
   return (
     <>
       <section className="relative overflow-hidden">
@@ -125,32 +127,27 @@ export default function Home() {
           </FadeIn>
 
           <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2">
-            {HOME_VIDEOS.map((video) => (
-              <div
-                key={video.id}
-                className="overflow-hidden rounded-2xl border border-dark-border bg-dark-card"
-              >
-                {video.youtubeId ? (
+            {videosLoading ? (
+              <p className="col-span-full text-center text-slate-400">جاري تحميل الفيديوهات...</p>
+            ) : videos.length === 0 ? (
+              <p className="col-span-full text-center text-slate-400">لا توجد فيديوهات بعد</p>
+            ) : (
+              videos.map((video) => (
+                <div
+                  key={video.id}
+                  className="overflow-hidden rounded-2xl border border-dark-border bg-dark-card"
+                >
                   <YouTubeEmbed
                     youtubeId={video.youtubeId}
                     title={video.title}
-                    startSeconds={'startSeconds' in video ? video.startSeconds : undefined}
+                    startSeconds={video.startSeconds ?? undefined}
                   />
-                ) : (
-                  <div className="relative aspect-video">
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-primary-500/10 via-dark to-accent-purple/10 px-4 text-center">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-full border border-primary-500/30 bg-primary-500/15 text-primary-400">
-                        <span className="ms-0.5 text-xl">▶</span>
-                      </div>
-                      <p className="text-sm text-slate-400">الفيديو قريباً</p>
-                    </div>
+                  <div className="px-4 py-3">
+                    <h3 className="text-base font-semibold text-white sm:text-sm">{video.title}</h3>
                   </div>
-                )}
-                <div className="px-4 py-3">
-                  <h3 className="text-base font-semibold text-white sm:text-sm">{video.title}</h3>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </section>
