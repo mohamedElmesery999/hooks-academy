@@ -1,19 +1,48 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { RequestStatus } from '@/lib/api-utils'
-import { useSendStudentEmail, useDeleteStudent, useStudents, useUpdateStudent, useUpdateStudentStatus } from '@/lib/hooks/api'
+import {
+  useSendStudentEmail,
+  useDeleteStudent,
+  useStudents,
+  useUpdateStudent,
+  useUpdateStudentStatus,
+  useCycles,
+  useOpenNextCycle,
+} from '@/lib/hooks/api'
 import { Button } from '@/components/ui/Button'
 import { FadeIn } from '@/components/ui/FadeIn'
+import { Modal } from '@/components/ui/Modal'
 import { AdminShell } from '@/components/admin/AdminShell'
 import { StatsCards, type StatsFilter } from '@/components/admin/StatsCards'
 import { PaymentSidebar } from '@/components/admin/PaymentSidebar'
 import { RequestsTable } from '@/components/admin/RequestsTable'
+import { CycleTabs } from '@/components/admin/CycleTabs'
 
 export default function Dashboard() {
   const [filter, setFilter] = useState<StatsFilter>('all')
+  const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+  const [confirmNewCycle, setConfirmNewCycle] = useState(false)
 
-  const { data: students = [], isLoading, isError, refetch } = useStudents()
+  const { data: cycles = [], isLoading: cyclesLoading } = useCycles()
+  const openNextCycle = useOpenNextCycle()
+
+  useEffect(() => {
+    if (!cycles.length) return
+    const stillExists = cycles.some((cycle) => cycle.id === activeCycleId)
+    if (!activeCycleId || !stillExists) {
+      const openCycle = cycles.find((cycle) => cycle.status === 'open') ?? cycles[cycles.length - 1]
+      setActiveCycleId(openCycle.id)
+    }
+  }, [cycles, activeCycleId])
+
+  const {
+    data: students = [],
+    isLoading,
+    isError,
+    refetch,
+  } = useStudents({ cycleId: activeCycleId ?? undefined })
   const updateStatus = useUpdateStudentStatus()
   const updateStudent = useUpdateStudent()
   const sendEmail = useSendStudentEmail()
@@ -39,6 +68,13 @@ export default function Dashboard() {
     await deleteStudent.mutateAsync(id)
   }
 
+  const handleOpenNextCycle = async () => {
+    const result = await openNextCycle.mutateAsync()
+    setActiveCycleId(result.next.id)
+    setFilter('all')
+    setConfirmNewCycle(false)
+  }
+
   const filtered =
     filter === 'all' ? students : students.filter((student) => student.status === filter)
 
@@ -56,10 +92,29 @@ export default function Dashboard() {
     rejected: 'مرفوض',
   }
 
-  const activeFilterLabel = filterLabels[filter]
+  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+  const activeFilterLabel = `${activeCycle?.name ?? 'الدورة'} · ${filterLabels[filter]}`
+  const openCycle = cycles.find((cycle) => cycle.status === 'open')
 
   return (
     <AdminShell>
+      <FadeIn className="mb-4">
+        {cyclesLoading ? (
+          <p className="text-sm text-slate-500">جاري تحميل الدورات...</p>
+        ) : (
+          <CycleTabs
+            cycles={cycles}
+            activeCycleId={activeCycleId}
+            onSelect={(id) => {
+              setActiveCycleId(id)
+              setFilter('all')
+            }}
+            onOpenNext={() => setConfirmNewCycle(true)}
+            opening={openNextCycle.isPending}
+          />
+        )}
+      </FadeIn>
+
       <FadeIn className="mb-8">
         <StatsCards
           {...stats}
@@ -74,9 +129,17 @@ export default function Dashboard() {
         </FadeIn>
 
         <FadeIn delay={0.2} className="min-w-0 flex-1">
-          <h2 className="mb-6 text-xl font-semibold text-white">طلبات التسجيل</h2>
+          <h2 className="mb-6 text-xl font-semibold text-white">
+            طلبات التسجيل
+            {activeCycle ? (
+              <span className="ms-2 text-base font-normal text-slate-400">
+                {activeCycle.name}
+                {activeCycle.status === 'closed' ? ' (منتهية)' : ''}
+              </span>
+            ) : null}
+          </h2>
 
-          {isLoading ? (
+          {isLoading || cyclesLoading ? (
             <div className="rounded-2xl border border-dark-border bg-dark-card p-12 text-center">
               <p className="text-slate-400">جاري تحميل الطلبات...</p>
             </div>
@@ -99,6 +162,22 @@ export default function Dashboard() {
           )}
         </FadeIn>
       </div>
+
+      <Modal
+        open={confirmNewCycle}
+        onClose={() => !openNextCycle.isPending && setConfirmNewCycle(false)}
+        title="تأكيد إنهاء الدورة"
+        description={
+          openCycle
+            ? `هل أنت متأكد من إنهاء "${openCycle.name}" وفتح دورة جديدة؟ الطلبات الجديدة هتروح للدورة الجديدة، والدورة الحالية هتفضل ظاهرة للمراجعة.`
+            : 'هل أنت متأكد من فتح دورة جديدة للطلبات القادمة؟'
+        }
+        confirmLabel="إنهاء الدورة"
+        cancelLabel="إلغاء"
+        variant="danger"
+        loading={openNextCycle.isPending}
+        onConfirm={() => void handleOpenNextCycle()}
+      />
     </AdminShell>
   )
 }

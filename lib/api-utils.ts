@@ -20,6 +20,20 @@ export type Program = {
   _count?: { students: number }
 }
 
+export type CycleStatus = 'open' | 'closed'
+
+export type Cycle = {
+  id: string
+  number: number
+  name: string
+  status: CycleStatus
+  openedAt: string
+  closedAt: string | null
+  createdAt: string
+  updatedAt: string
+  _count?: { students: number }
+}
+
 export type Student = {
   id: string
   name: string
@@ -28,6 +42,7 @@ export type Student = {
   email: string
   phone: string
   programId: string
+  cycleId: string
   notes: string | null
   adminNotes: string | null
   totalAmount: number | null
@@ -135,10 +150,23 @@ export async function deleteProgram(id: string) {
   return data
 }
 
-export async function getStudents(status?: RequestStatus) {
+export async function getStudents(filters?: { status?: RequestStatus; cycleId?: string }) {
   const { data } = await api.get<Student[]>('/students', {
-    params: status ? { status } : undefined,
+    params: {
+      ...(filters?.status ? { status: filters.status } : {}),
+      ...(filters?.cycleId ? { cycleId: filters.cycleId } : {}),
+    },
   })
+  return data
+}
+
+export async function getCycles() {
+  const { data } = await api.get<Cycle[]>('/cycles')
+  return data
+}
+
+export async function openNextCycle() {
+  const { data } = await api.post<{ closed: Cycle; next: Cycle }>('/cycles')
   return data
 }
 
@@ -223,9 +251,12 @@ export const queryKeys = {
     detail: (id: string) => ['programs', id] as const,
   },
   students: {
-    all: (status?: RequestStatus) =>
-      status ? (['students', status] as const) : (['students'] as const),
+    all: (filters?: { status?: RequestStatus; cycleId?: string }) =>
+      ['students', filters?.status ?? 'all', filters?.cycleId ?? 'all'] as const,
     detail: (id: string) => ['students', id] as const,
+  },
+  cycles: {
+    all: ['cycles'] as const,
   },
   videos: {
     all: ['videos'] as const,

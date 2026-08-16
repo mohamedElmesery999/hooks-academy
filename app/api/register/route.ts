@@ -2,6 +2,7 @@ import { prisma } from '@/lib/db'
 import { errorResponse, handleApiError, jsonResponse } from '@/lib/api-response'
 import { sendNewRegistrationNotification, isSmtpConfigured } from '@/lib/email'
 import { registerStudentSchema } from '@/lib/validations/students'
+import { ensureOpenCycle } from '@/lib/cycles'
 
 export async function POST(request: Request) {
   try {
@@ -13,6 +14,8 @@ export async function POST(request: Request) {
       return errorResponse('البرنامج المختار غير متاح', 400)
     }
 
+    const cycle = await ensureOpenCycle()
+
     const student = await prisma.students.create({
       data: {
         name: data.student_name,
@@ -21,6 +24,7 @@ export async function POST(request: Request) {
         email: data.email,
         phone: data.phone,
         programId: data.program,
+        cycleId: cycle.id,
         notes: data.notes,
         status: 'pending',
       },

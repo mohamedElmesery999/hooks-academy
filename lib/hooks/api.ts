@@ -22,6 +22,8 @@ import {
   getPrograms,
   getStudent,
   getStudents,
+  getCycles,
+  openNextCycle,
   queryKeys,
   registerStudent,
   sendStudentEmail,
@@ -32,6 +34,7 @@ import {
   type CreateStudentPayload,
   type HomeTestimonial,
   type HomeVideo,
+  type Cycle,
   type Program,
   type RegisterPayload,
   type RegisterResponse,
@@ -113,13 +116,38 @@ export function useDeleteProgram(
 }
 
 export function useStudents(
-  status?: RequestStatus,
+  filters?: { status?: RequestStatus; cycleId?: string },
   options?: Omit<UseQueryOptions<Student[]>, 'queryKey' | 'queryFn'>,
 ) {
   return useQuery({
-    queryKey: queryKeys.students.all(status),
-    queryFn: () => getStudents(status),
+    queryKey: queryKeys.students.all(filters),
+    queryFn: () => getStudents(filters),
     ...options,
+    enabled: Boolean(filters?.cycleId) && (options?.enabled ?? true),
+  })
+}
+
+export function useCycles(options?: Omit<UseQueryOptions<Cycle[]>, 'queryKey' | 'queryFn'>) {
+  return useQuery({
+    queryKey: queryKeys.cycles.all,
+    queryFn: getCycles,
+    ...options,
+  })
+}
+
+export function useOpenNextCycle(
+  options?: UseMutationOptions<{ closed: Cycle; next: Cycle }, Error, void>,
+) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    ...options,
+    mutationFn: openNextCycle,
+    onSuccess: (data, variables, onMutateResult, context) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.cycles.all })
+      queryClient.invalidateQueries({ queryKey: ['students'] })
+      options?.onSuccess?.(data, variables, onMutateResult, context)
+    },
   })
 }
 
@@ -145,6 +173,7 @@ export function useCreateStudent(
     mutationFn: createStudent,
     onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: ['students'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.cycles.all })
       options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
@@ -164,6 +193,7 @@ export function useUpdateStudent(
     mutationFn: ({ id, payload }) => updateStudent(id, payload),
     onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: ['students'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.cycles.all })
       queryClient.invalidateQueries({ queryKey: queryKeys.students.detail(variables.id) })
       options?.onSuccess?.(data, variables, onMutateResult, context)
     },
@@ -185,6 +215,7 @@ export function useUpdateStudentStatus(
       updateStudentStatus(id, status, { sendEmail, customMessage }),
     onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: ['students'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.cycles.all })
       queryClient.invalidateQueries({ queryKey: queryKeys.students.detail(variables.id) })
       options?.onSuccess?.(data, variables, onMutateResult, context)
     },
@@ -214,6 +245,7 @@ export function useDeleteStudent(
     mutationFn: deleteStudent,
     onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: ['students'] })
+      queryClient.invalidateQueries({ queryKey: queryKeys.cycles.all })
       options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })
