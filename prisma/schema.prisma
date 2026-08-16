@@ -13,6 +13,23 @@ enum RequestStatus {
   rejected
 }
 
+enum CycleStatus {
+  open
+  closed
+}
+
+model cycles {
+  id        String      @id @default(uuid())
+  number    Int         @unique
+  name      String
+  status    CycleStatus @default(open)
+  openedAt  DateTime    @default(now())
+  closedAt  DateTime?
+  students  students[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
 model students {
   id String @id @default(uuid())
   name String
@@ -22,6 +39,8 @@ model students {
   phone String
   program programs @relation(fields: [programId], references: [id])
   programId String
+  cycle cycles @relation(fields: [cycleId], references: [id])
+  cycleId String
   notes String?
   adminNotes String?
   totalAmount Float?

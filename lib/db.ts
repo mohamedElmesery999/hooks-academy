@@ -7,7 +7,7 @@ const globalForPrisma = globalThis as unknown as {
 }
 
 // Bump when prisma/schema.prisma changes so dev server picks up new fields without a manual restart.
-const PRISMA_SCHEMA_VERSION = '2026-06-29-payment-fields'
+const PRISMA_SCHEMA_VERSION = '2026-08-16-cycles'
 
 function createPrismaClient() {
   const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! })
