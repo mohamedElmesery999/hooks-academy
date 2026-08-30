@@ -27,7 +27,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   const handleLogout = async () => {
     await logoutAdmin()
-    router.push('/login')
+    router.replace('/')
     router.refresh()
   }
 

@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { Button } from '../ui/Button'
@@ -13,8 +14,14 @@ const links = [
   { to: '/register', label: 'سجّل الآن' },
 ]
 
+function isActivePath(pathname: string, href: string) {
+  if (href === '/') return pathname === '/'
+  return pathname === href || pathname.startsWith(`${href}/`)
+}
+
 export function Navbar() {
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
 
   return (
     <header className="sticky top-0 z-50 border-b border-dark-border/60 bg-dark/80 backdrop-blur-xl">
@@ -25,18 +32,22 @@ export function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
-          {links.map((link) => (
-            <Link
-              key={link.to}
-              href={link.to}
-              as={link.to === '/' ? undefined : link.to}
-              className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-                link.to === '/' ? 'text-primary-400 bg-primary-500/10' : 'text-slate-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) => {
+            const active = isActivePath(pathname, link.to)
+            return (
+              <Link
+                key={link.to}
+                href={link.to}
+                className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+                  active
+                    ? 'text-primary-400 bg-primary-500/10'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
         </div>
 
         <div className="hidden md:block">
@@ -64,19 +75,21 @@ export function Navbar() {
             className="overflow-hidden border-t border-dark-border md:hidden"
           >
             <div className="flex flex-col gap-1 px-3 py-3 sm:px-6">
-              {links.map((link) => (
+              {links.map((link) => {
+                const active = isActivePath(pathname, link.to)
+                return (
                   <Link
-                  key={link.to}
-                  href={link.to}
-                  as={link.to === '/' ? undefined : link.to}
-                  onClick={() => setOpen(false)}
-                  className={`rounded-lg px-3 py-3.5 text-base font-medium sm:px-4 sm:text-sm ${
-                    link.to === '/' ? 'text-primary-400 bg-primary-500/10' : 'text-slate-400'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
+                    key={link.to}
+                    href={link.to}
+                    onClick={() => setOpen(false)}
+                    className={`rounded-lg px-3 py-3.5 text-base font-medium sm:px-4 sm:text-sm ${
+                      active ? 'text-primary-400 bg-primary-500/10' : 'text-slate-400'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              })}
             </div>
           </motion.div>
         )}
