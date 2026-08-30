@@ -63,7 +63,7 @@ export default function Home() {
             </p>
             <div className="mx-auto flex w-full max-w-xs flex-col gap-3 sm:mx-0 sm:max-w-none sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start">
               <Link href="/register" className="w-full sm:w-auto sm:min-w-[13.5rem]">
-                <Button size="lg" className="h-12 w-full bg-primary-500/10 sm:h-auto">
+                <Button size="lg" variant="success" className="h-12 w-full sm:h-auto">
                   سجّل طفلك الآن
                 </Button>
               </Link>
@@ -92,6 +92,28 @@ export default function Home() {
             />
           </motion.div>
         </div>
+      </section>
+
+      <section className="page-container max-w-7xl py-6 sm:py-8">
+        <FadeIn>
+          <Link
+            href="/register"
+            className="group flex flex-col items-center justify-between gap-4 rounded-2xl border border-primary-500/30 bg-gradient-to-l from-primary-500/15 via-dark-card to-violet-500/10 px-5 py-5 text-center transition hover:border-primary-400/50 hover:from-primary-500/20 sm:flex-row sm:px-8 sm:text-right"
+          >
+            <div className="min-w-0">
+              <p className="mb-1 text-xs font-medium text-primary-300 sm:text-sm">إعلان الدورة الثالثة</p>
+              <p className="text-base font-bold text-white sm:text-lg">
+                الدورة الثالثة سوف تبدأ يوم{' '}
+                <span className="text-primary-300" dir="ltr">
+                  15/9/2026
+                </span>
+              </p>
+            </div>
+            <span className="shrink-0 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition group-hover:scale-105 group-hover:bg-emerald-400">
+              سجّل الآن
+            </span>
+          </Link>
+        </FadeIn>
       </section>
 
       <section className="page-container max-w-7xl sm:py-20">
@@ -169,7 +191,7 @@ export default function Home() {
             <h2 className="mb-4 text-2xl font-bold text-white sm:text-3xl">جاهز تبدأ المغامرة؟</h2>
             <p className="mb-8 text-base text-slate-400 sm:text-base">سجّل طفلك الآن وانضم لعائلة Hooks Academy</p>
             <Link href="/register">
-              <Button size="lg">ابدأ التسجيل</Button>
+              <Button size="lg" variant="success">ابدأ التسجيل</Button>
             </Link>
           </FadeIn>
         </div>
