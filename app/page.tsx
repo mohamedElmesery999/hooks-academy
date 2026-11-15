@@ -86,7 +86,7 @@ export default function Home() {
             <motion.img
               src="/logo.png"
               alt="Hooks Academy"
-              className="relative h-64 w-64 rounded-3xl object-cover shadow-3xl sm:h-80 sm:w-80"
+              className="relative h-64 w-64 rounded-3xl object-cover shadow-2xl sm:h-80 sm:w-80"
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
             />
