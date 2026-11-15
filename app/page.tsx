@@ -104,7 +104,7 @@ export default function Home() {
               <p className="mb-1 text-xs font-medium text-primary-300 sm:text-sm">إعلان الدورة الثالثة</p>
               <p className="text-base font-bold text-white sm:text-lg">
                 الدورة الثالثة سوف تبدأ يوم{' '}
-                <span className="text-primary-300" dir="ltr">
+                <span className="text-primary-400" dir="ltr">
                   15/9/2026
                 </span>
               </p>
