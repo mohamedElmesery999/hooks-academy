@@ -70,7 +70,7 @@ export default function Home() {
               <Link href="/content" className="w-full sm:w-auto sm:min-w-[13.5rem]">
                 <Button size="lg" variant="secondary" className="h-12 w-full sm:h-auto ">
                   استكشف المحتوى
-                  <ArrowLeft size={18} />
+                  <ArrowLeft size={20} />
                 </Button>
               </Link>
             </div>
