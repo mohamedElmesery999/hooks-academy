@@ -45,7 +45,7 @@ export default function Home() {
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.6 }}
             className="flex-1 text-center lg:text-right"
           >
             <span className="mb-4 inline-block rounded-full border border-primary-500/30 bg-primary-500/10 px-4 py-1.5 text-base font-medium text-primary-400 sm:text-sm">
