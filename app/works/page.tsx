@@ -9,9 +9,6 @@ import { FadeIn } from '@/components/ui/FadeIn'
 export default function Works() {
   return (
     <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(56,189,248,0.12)_0%,transparent_55%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(192,38,211,0.08)_0%,transparent_45%)]" />
-
       <div className="page-container max-w-7xl sm:py-20">
         <FadeIn className="mb-10 text-center sm:mb-14">
           <motion.span
@@ -36,7 +33,7 @@ export default function Works() {
         <WorksGallery />
 
         <FadeIn delay={0.2} className="mt-12 sm:mt-16">
-          <div className="relative overflow-hidden rounded-2xl border border-primary-500/20 bg-gradient-to-l from-primary-500/10 via-dark-card to-accent-purple/10 p-6 text-center sm:rounded-3xl sm:p-10">
+          <div className="rounded-2xl border border-[#1c3a4d] bg-[#0F1E29] p-6 text-center sm:rounded-3xl sm:p-10">
             <Rocket size={40} className="mx-auto mb-4 text-primary-400" />
             <h2 className="mb-3 text-xl font-bold text-white sm:text-3xl">
               عايز طفلك يبقى عنده مشروعه الخاص؟
