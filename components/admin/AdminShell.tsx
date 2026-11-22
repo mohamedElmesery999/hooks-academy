@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { LayoutDashboard, LogOut, MonitorSmartphone } from 'lucide-react'
+import { LayoutDashboard, LogOut, MonitorSmartphone, LayoutTemplate } from 'lucide-react'
 import { logoutAdmin } from '@/lib/auth'
 import { Button } from '@/components/ui/Button'
 
@@ -18,6 +18,12 @@ const tabs = [
     label: 'إدارة الشاشة الرئيسية',
     icon: MonitorSmartphone,
     match: (pathname: string) => pathname.startsWith('/admin/homepage'),
+  },
+  {
+    href: '/admin/works',
+    label: 'أعمال الطلاب',
+    icon: LayoutTemplate,
+    match: (pathname: string) => pathname.startsWith('/admin/works'),
   },
 ] as const
 

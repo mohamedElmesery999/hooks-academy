@@ -98,6 +98,17 @@ export type HomeTestimonial = {
   updatedAt: string
 }
 
+export type StudentWork = {
+  id: string
+  name: string
+  title: string | null
+  liveUrl: string | null
+  imageUrl: string
+  sortOrder: number
+  createdAt: string
+  updatedAt: string
+}
+
 export const api = axios.create({
   baseURL: '/api',
   withCredentials: true,
@@ -245,6 +256,21 @@ export async function deleteHomeTestimonial(id: string) {
   return data
 }
 
+export async function getStudentWorks() {
+  const { data } = await api.get<StudentWork[]>('/works')
+  return data
+}
+
+export async function createStudentWork(payload: FormData) {
+  const { data } = await api.post<StudentWork>('/works', payload)
+  return data
+}
+
+export async function deleteStudentWork(id: string) {
+  const { data } = await api.delete<{ success: boolean }>(`/works/${id}`)
+  return data
+}
+
 export const queryKeys = {
   programs: {
     all: ['programs'] as const,
@@ -263,5 +289,8 @@ export const queryKeys = {
   },
   testimonials: {
     all: ['testimonials'] as const,
+  },
+  works: {
+    all: ['works'] as const,
   },
 }

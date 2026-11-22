@@ -3,19 +3,22 @@ import path from 'node:path'
 import { randomUUID } from 'node:crypto'
 import { put, del } from '@vercel/blob'
 
-const UPLOAD_DIR = path.join(process.cwd(), 'public', 'uploads', 'testimonials')
-
 // Vercel's serverless functions run on a read-only filesystem, so uploaded
 // files must go to Vercel Blob storage there. Locally (no token configured)
 // we fall back to writing straight into `public/uploads` for convenience.
 const useBlobStorage = Boolean(process.env.BLOB_READ_WRITE_TOKEN)
 
-export async function saveTestimonialImage(file: File) {
+function uploadDir(folder: string) {
+  return path.join(process.cwd(), 'public', 'uploads', folder)
+}
+
+/** Save an uploaded image into the given `public/uploads/<folder>` (or Blob). */
+export async function saveImage(file: File, folder: string) {
   const ext = guessExtension(file.type, file.name)
   const filename = `${randomUUID()}${ext}`
 
   if (useBlobStorage) {
-    const blob = await put(`testimonials/${filename}`, file, {
+    const blob = await put(`${folder}/${filename}`, file, {
       access: 'public',
       addRandomSuffix: false,
     })
@@ -23,10 +26,19 @@ export async function saveTestimonialImage(file: File) {
   }
 
   const bytes = Buffer.from(await file.arrayBuffer())
-  await mkdir(UPLOAD_DIR, { recursive: true })
-  await writeFile(path.join(UPLOAD_DIR, filename), bytes)
+  await mkdir(uploadDir(folder), { recursive: true })
+  await writeFile(path.join(uploadDir(folder), filename), bytes)
 
-  return `/uploads/testimonials/${filename}`
+  return `/uploads/${folder}/${filename}`
+}
+
+/** Backwards-compatible helper for testimonial screenshots. */
+export function saveTestimonialImage(file: File) {
+  return saveImage(file, 'testimonials')
+}
+
+export function saveWorkImage(file: File) {
+  return saveImage(file, 'works')
 }
 
 export async function deleteUploadedFile(imageUrl: string) {
@@ -39,11 +51,12 @@ export async function deleteUploadedFile(imageUrl: string) {
     return
   }
 
-  if (!imageUrl.startsWith('/uploads/testimonials/')) return
+  const match = imageUrl.match(/^\/uploads\/([^/]+)\/(.+)$/)
+  if (!match) return
 
-  const filename = path.basename(imageUrl)
+  const [, folder, filename] = match
   try {
-    await unlink(path.join(UPLOAD_DIR, filename))
+    await unlink(path.join(uploadDir(folder), path.basename(filename)))
   } catch {
     /* ignore missing file */
   }

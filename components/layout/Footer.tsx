@@ -51,6 +51,7 @@ export function Footer() {
               <li><Link href="/" className="hover:text-primary-400 transition-colors">الرئيسية</Link></li>
               <li><Link href="/services" className="hover:text-primary-400 transition-colors">الخدمات</Link></li>
               <li><Link href="/content" className="hover:text-primary-400 transition-colors">المحتوى</Link></li>
+              <li><Link href="/works" className="hover:text-primary-400 transition-colors">أعمال الطلاب</Link></li>
               <li><Link href="/register" className="hover:text-primary-400 transition-colors">التسجيل</Link></li>
             </ul>
           </div>
@@ -64,7 +65,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone size={16} className="text-primary-400" />
-                واتساب: متاح عبر التسجيل
+              واتس : 01558651226 
               </li>
               <li className="flex items-center gap-2">
                 <Mail size={16} className="text-primary-400" />
