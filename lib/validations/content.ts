@@ -11,3 +11,9 @@ export const createTestimonialSchema = z.object({
   role: z.string().min(1).default('طالبة'),
   alt: z.string().optional(),
 })
+
+export const createWorkSchema = z.object({
+  name: z.string().min(2, 'اسم الطالب مطلوب'),
+  title: z.string().optional(),
+  liveUrl: z.string().url('رابط غير صالح').optional().or(z.literal('')),
+})

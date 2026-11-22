@@ -48,8 +48,6 @@ const iconMap: Record<string, LucideIcon> = {
 export default function Content() {
   return (
     <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(56,189,248,0.12)_0%,transparent_55%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(192,38,211,0.08)_0%,transparent_45%)]" />
 
       <div className="page-container max-w-7xl sm:py-20">
         <FadeIn className="mb-10 text-center sm:mb-16">
@@ -171,27 +169,19 @@ export default function Content() {
           <motion.div
             whileInView={{ scale: [0.98, 1] }}
             viewport={{ once: true }}
-            className="relative overflow-hidden rounded-2xl border border-primary-500/20 bg-gradient-to-l from-primary-500/10 via-dark-card to-accent-purple/10 p-6 text-center sm:rounded-3xl sm:p-10"
+            className="rounded-2xl border border-[#1c3a4d] bg-[#0F1E29] p-6 text-center sm:rounded-3xl sm:p-10"
           >
-            <motion.div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(56,189,248,0.15)_0%,transparent_65%)]"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            />
-            <div className="relative">
-              <Globe size={40} className="mx-auto mb-4 text-primary-400" />
-              <h2 className="mb-3 text-xl font-bold text-white sm:text-3xl">
-                من الصفر إلى موقعك الشخصي
-              </h2>
-              <p className="mx-auto mb-6 max-w-xl text-base text-slate-400 sm:mb-8">
-                كل طالب ينهي الرحلة ومعه مشروع Portfolio حقيقي — دليل على ما تعلّمه
-                وإنجاز يفتخر به أمام عائلته.
-              </p>
-              <Link href="/register">
-                <Button size="lg">ابدأ رحلة التعلّم</Button>
-              </Link>
-            </div>
+            <Globe size={40} className="mx-auto mb-4 text-primary-400" />
+            <h2 className="mb-3 text-xl font-bold text-white sm:text-3xl">
+              من الصفر إلى موقعك الشخصي
+            </h2>
+            <p className="mx-auto mb-6 max-w-xl text-base text-slate-400 sm:mb-8">
+              كل طالب ينهي الرحلة ومعه مشروع Portfolio حقيقي — دليل على ما تعلّمه
+              وإنجاز يفتخر به أمام عائلته.
+            </p>
+            <Link href="/register">
+              <Button size="lg">ابدأ رحلة التعلّم</Button>
+            </Link>
           </motion.div>
         </FadeIn>
       </div>

@@ -11,6 +11,7 @@ const links = [
   { to: '/', label: 'الرئيسية' },
   { to: '/services', label: 'الخدمات' },
   { to: '/content', label: 'المحتوى' },
+  { to: '/works', label: 'أعمال الطلاب' },
   { to: '/register', label: 'سجّل الآن' },
 ]
 

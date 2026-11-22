@@ -7,7 +7,7 @@ export const siteConfig = {
     'An interactive educational academy building creativity, coding, and future skills for children aged 8 to 15.',
   locale: 'ar_EG',
   language: 'ar',
-  email: 'info@hooksacademy.com',
+  email: 'hooksacademy3@gmail.com',
   social: {
     facebook: 'https://www.facebook.com/share/19K1ojG6CB/',
   },

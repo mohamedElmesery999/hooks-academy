@@ -79,3 +79,14 @@ model home_testimonials {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model student_works {
+  id        String   @id @default(uuid())
+  name      String
+  title     String?
+  liveUrl   String?
+  imageUrl  String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -18,6 +18,9 @@ import {
   deleteHomeVideo,
   getHomeTestimonials,
   getHomeVideos,
+  getStudentWorks,
+  createStudentWork,
+  deleteStudentWork,
   getProgram,
   getPrograms,
   getStudent,
@@ -34,6 +37,7 @@ import {
   type CreateStudentPayload,
   type HomeTestimonial,
   type HomeVideo,
+  type StudentWork,
   type Cycle,
   type Program,
   type RegisterPayload,
@@ -335,6 +339,46 @@ export function useDeleteHomeTestimonial(
     mutationFn: deleteHomeTestimonial,
     onSuccess: (data, variables, onMutateResult, context) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.testimonials.all })
+      options?.onSuccess?.(data, variables, onMutateResult, context)
+    },
+  })
+}
+
+export function useStudentWorks(
+  options?: Omit<UseQueryOptions<StudentWork[]>, 'queryKey' | 'queryFn'>,
+) {
+  return useQuery({
+    queryKey: queryKeys.works.all,
+    queryFn: getStudentWorks,
+    ...options,
+  })
+}
+
+export function useCreateStudentWork(
+  options?: UseMutationOptions<StudentWork, Error, FormData>,
+) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    ...options,
+    mutationFn: createStudentWork,
+    onSuccess: (data, variables, onMutateResult, context) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.works.all })
+      options?.onSuccess?.(data, variables, onMutateResult, context)
+    },
+  })
+}
+
+export function useDeleteStudentWork(
+  options?: UseMutationOptions<{ success: boolean }, Error, string>,
+) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    ...options,
+    mutationFn: deleteStudentWork,
+    onSuccess: (data, variables, onMutateResult, context) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.works.all })
       options?.onSuccess?.(data, variables, onMutateResult, context)
     },
   })

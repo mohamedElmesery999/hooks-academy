@@ -94,28 +94,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="page-container max-w-7xl py-6 sm:py-8">
-        <FadeIn>
-          <Link
-            href="/register"
-            className="group flex flex-col items-center justify-between gap-4 rounded-2xl border border-primary-500/30 bg-gradient-to-l from-primary-500/15 via-dark-card to-violet-500/10 px-5 py-5 text-center transition hover:border-primary-400/50 hover:from-primary-500/20 sm:flex-row sm:px-8 sm:text-right"
-          >
-            <div className="min-w-0">
-              <p className="mb-1 text-xs font-medium text-primary-300 sm:text-sm">إعلان الدورة الثالثة</p>
-              <p className="text-base font-bold text-white sm:text-lg">
-                الدورة الثالثة سوف تبدأ يوم{' '}
-                <span className="text-primary-300" dir="ltr">
-                  15/9/2026
-                </span>
-              </p>
-            </div>
-            <span className="shrink-0 rounded-full bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/25 transition group-hover:scale-105 group-hover:bg-emerald-400">
-              سجّل الآن
-            </span>
-          </Link>
-        </FadeIn>
-      </section>
-
       <section className="page-container max-w-7xl sm:py-20">
         <FadeIn className="mb-10 text-center sm:mb-12">
           <h2 className="mb-4 text-2xl font-bold text-white sm:text-3xl">لماذا Hooks Academy؟</h2>
