@@ -6,6 +6,9 @@ import { motion } from 'framer-motion'
 import { ArrowUpRight, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react'
 import type { StudentWork } from '@/lib/api-utils'
 import { useStudentWorks } from '@/lib/hooks/api'
+import { siteConfig } from '@/lib/seo/site'
+
+const facebookUrl = siteConfig.social.facebook
 
 function hostname(url?: string | null) {
   if (!url) return null
@@ -89,7 +92,9 @@ export function WorksGallery() {
   }
 
   return (
-    <div className="flex items-center gap-3 sm:gap-4">
+    <>
+      <MobileWorks works={works} />
+      <div className="hidden items-center gap-3 sm:flex sm:gap-4">
       <button
         type="button"
         aria-label="الأعمال السابقة"
@@ -137,25 +142,21 @@ export function WorksGallery() {
               </div>
 
               <div className="relative aspect-[16/10] w-full overflow-hidden bg-dark">
-                <div className="absolute inset-x-0 top-0 h-[235%] transition-transform duration-[4500ms] ease-linear group-hover:-translate-y-[57.5%]">
-                  <Image
-                    src={work.imageUrl}
-                    alt={work.title ?? work.name}
-                    fill
-                    sizes="(max-width: 640px) 86vw, 520px"
-                    className="object-cover object-top"
-                  />
-                </div>
+                <Image
+                  src={work.imageUrl}
+                  alt={work.title ?? work.name}
+                  fill
+                  sizes="(max-width: 640px) 90vw, 520px"
+                  className="object-cover object-top transition-[object-position] duration-[4000ms] ease-linear group-hover:object-bottom"
+                />
                 <div className="pointer-events-none absolute inset-0 bg-dark/35 opacity-100 transition-opacity duration-500 group-hover:opacity-0" />
                 <div className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-0 transition-all duration-700 group-hover:left-[130%] group-hover:opacity-100" />
-                {work.liveUrl && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex scale-90 items-center gap-2 rounded-xl bg-primary-500 px-6 py-3 text-base font-semibold text-white opacity-0 shadow-xl shadow-primary-500/40 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
-                      <ExternalLink size={18} />
-                      زيارة الموقع المباشر
-                    </span>
-                  </div>
-                )}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex scale-90 items-center gap-2 rounded-xl bg-primary-500 px-6 py-3 text-base font-semibold text-white opacity-0 shadow-xl shadow-primary-500/40 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
+                    <ExternalLink size={18} />
+                    زيارة الموقع
+                  </span>
+                </div>
                 {work.liveUrl && (
                   <span className="absolute end-3 top-3 flex items-center gap-1.5 rounded-full bg-dark/80 px-3 py-1.5 text-xs font-semibold text-emerald-300 backdrop-blur-sm ring-1 ring-emerald-400/30">
                     <span className="relative flex h-2 w-2">
@@ -186,7 +187,7 @@ export function WorksGallery() {
 
           const shell = (
             <>
-              <div className="overflow-hidden rounded-2xl bg-dark-card [clip-path:inset(0_round_1rem)]">
+              <div className="overflow-hidden rounded-2xl bg-dark-card">
                 {content}
               </div>
               <span className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-dark-border transition-shadow duration-300 group-hover:ring-primary-500/70" />
@@ -205,18 +206,14 @@ export function WorksGallery() {
               transition={{ duration: 0.45, delay: Math.min(i, 4) * 0.08 }}
               className="w-[86%] shrink-0 snap-start sm:w-[calc((100%-1.5rem)/2)]"
             >
-              {work.liveUrl ? (
-                <a
-                  href={work.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cardClass}
-                >
-                  {shell}
-                </a>
-              ) : (
-                <div className={cardClass}>{shell}</div>
-              )}
+              <a
+                href={facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cardClass}
+              >
+                {shell}
+              </a>
             </motion.div>
           )
         })}
@@ -231,6 +228,96 @@ export function WorksGallery() {
       >
         <ChevronLeft size={24} />
       </button>
+      </div>
+    </>
+  )
+}
+
+function MobileWorks({ works }: { works: StudentWork[] }) {
+  const [index, setIndex] = useState(0)
+  const startX = useRef(0)
+  const work = works[Math.min(index, works.length - 1)]
+  const host = hostname(work.liveUrl)
+
+  const go = (delta: number) => {
+    setIndex((current) => Math.max(0, Math.min(works.length - 1, current + delta)))
+  }
+
+  const card = (
+    <>
+      <div className="relative aspect-[4/3] w-full bg-dark">
+        <Image
+          src={work.imageUrl}
+          alt={work.title ?? work.name}
+          fill
+          sizes="100vw"
+          className="object-cover object-top"
+          priority
+        />
+      </div>
+      <div className="space-y-1 px-4 py-4 text-center">
+        <p className="text-xl font-bold text-white">{work.name}</p>
+        {work.title && <p className="text-sm text-slate-300">{work.title}</p>}
+        {host && (
+          <p dir="ltr" className="truncate text-xs text-slate-500">
+            {host}
+          </p>
+        )}
+        <a
+          href={facebookUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary-500 px-5 py-2.5 text-sm font-semibold text-white"
+        >
+          <ExternalLink size={16} />
+          زيارة الموقع
+        </a>
+      </div>
+    </>
+  )
+
+  return (
+    <div className="sm:hidden">
+      <motion.div
+        key={work.id}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25 }}
+        onTouchStart={(e) => {
+          startX.current = e.touches[0].clientX
+        }}
+        onTouchEnd={(e) => {
+          const dx = e.changedTouches[0].clientX - startX.current
+          if (dx > 48) go(-1)
+          else if (dx < -48) go(1)
+        }}
+      >
+        <div className="overflow-hidden rounded-3xl border border-dark-border bg-dark-card">{card}</div>
+      </motion.div>
+
+      <div className="mt-4 flex items-center justify-center gap-5">
+        <button
+          type="button"
+          aria-label="العمل السابق"
+          disabled={index === 0}
+          onClick={() => go(-1)}
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-dark-border bg-dark-card text-white disabled:opacity-30"
+        >
+          <ChevronRight size={22} />
+        </button>
+        <span dir="ltr" className="min-w-14 text-center text-sm font-semibold text-slate-300">
+          {index + 1} / {works.length}
+        </span>
+        <button
+          type="button"
+          aria-label="العمل التالي"
+          disabled={index >= works.length - 1}
+          onClick={() => go(1)}
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-dark-border bg-dark-card text-white disabled:opacity-30"
+        >
+          <ChevronLeft size={22} />
+        </button>
+      </div>
     </div>
   )
 }
